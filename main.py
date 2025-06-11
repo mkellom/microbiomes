@@ -293,20 +293,20 @@ annotation_column = column(autocomp_title,row(autocomp,heat_slider),line1,checkb
 
 collapse = Button(label="Collapse Annotation Panel", button_type="danger")
 
-#note = Div(text="""NOTE: This tool may be unavailable or degraded January 27 - February 1 2025 due to <a href="https://www.nersc.gov/live-status/motd/">NERSC scheduled maintenance.</a>""", styles={'font-size': '200%', 'color': 'red'})
+reference = Div(text="""Reference: <a target="_blank" rel="noopener noreferrer" href="https://www.biorxiv.org/content/10.1101/2025.01.16.633425v1">Kellom, M., et al. \"Tetranucleotide frequencies differentiate genomic boundaries and metabolic strategies across environmental microbiomes.\" bioRxiv 2025.01.16.633425. doi: 10.1101/2025.01.16.633425</a>""")
+
+#note = Div(text="""NOTE: This tool may be unavailable or degraded January 27 - February 1 2025 due to <a target="_blank" rel="noopener noreferrer" href="https://www.nersc.gov/live-status/motd/">NERSC scheduled maintenance.</a>""", styles={'font-size': '200%', 'color': 'red'})
 
 def collapse_button():
 	global layout, collapse
 	curdoc().hold("combine")
 	if collapse.label=="Collapse Annotation Panel":
 		collapse.label="Expand Annotation Panel"
-		new_layout = column(row(collapse,img_button),row(p))
-		#new_layout = column(note,row(p))
+		new_layout = row(p)
 	elif collapse.label=="Expand Annotation Panel":
 		collapse.label="Collapse Annotation Panel"
-		new_layout = column(row(collapse,img_button),row(annotation_column,p))
-		#new_layout = column(note,row(annotation_column,p))
-	layout.children[1] = new_layout
+		new_layout = row(annotation_column,p)
+	layout.children[2] = new_layout
 	curdoc().unhold()
 
 collapse.on_click(collapse_button)
@@ -316,8 +316,7 @@ img_callback = CustomJS(code='''window.open('https://img.jgi.doe.gov/', '_blank'
 img_button.js_on_click(img_callback)
 
 initial = row(annotation_column,p)
-#initial = column(note,guide_link,row(annotation_column,p))
-layout = column(guide_link,row(collapse,img_button),initial)
+layout = column(guide_link,row(collapse,img_button),initial,reference)
 layout.name = "app"
 curdoc().add_root(layout)
 curdoc().title = "IMG Metagenomes 4mer LDA and KNN Model"
