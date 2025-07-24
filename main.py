@@ -293,9 +293,11 @@ annotation_column = column(autocomp_title,row(autocomp,heat_slider),line1,checkb
 
 collapse = Button(label="Collapse Annotation Panel", button_type="danger")
 
-reference = Div(text="""Reference: <a target="_blank" rel="noopener noreferrer" href="https://www.biorxiv.org/content/10.1101/2025.01.16.633425v1">Kellom, M., et al. \"Tetranucleotide frequencies differentiate genomic boundaries and metabolic strategies across environmental microbiomes.\" bioRxiv 2025.01.16.633425. doi: 10.1101/2025.01.16.633425</a>""")
+reference = Div(text="""Reference: <a target="_blank" rel="noopener noreferrer" href="https://journals.asm.org/doi/10.1128/msystems.01744-24">Kellom, M., et al. 2025. \"Tetranucleotide frequencies differentiate genomic boundaries and metabolic strategies across environmental microbiomes.\" <i>mSystems</i> 0:e01744-24. doi: 10.1128/msystems.01744-24</a>""")
 
-#note = Div(text="""NOTE: This tool may be unavailable or degraded January 27 - February 1 2025 due to <a target="_blank" rel="noopener noreferrer" href="https://www.nersc.gov/live-status/motd/">NERSC scheduled maintenance.</a>""", styles={'font-size': '200%', 'color': 'red'})
+status = Div(text="""This page runs on the Spin platform and displays data hosted on the Community File System (CFS) of NERSC. Check their status and maintenance schedules: <a target="_blank" rel="noopener noreferrer" href="https://www.nersc.gov/users/status">Here</a>""")
+
+#note = Div(text="""NOTE: IMG will be undergoing database upgrades July 8 - July 21. Any links to IMG pages may not be functional during this time.</a>""", styles={'font-size': '200%', 'color': 'red'})
 
 def collapse_button():
 	global layout, collapse
@@ -306,7 +308,8 @@ def collapse_button():
 	elif collapse.label=="Expand Annotation Panel":
 		collapse.label="Collapse Annotation Panel"
 		new_layout = row(annotation_column,p)
-	layout.children[2] = new_layout
+	layout.children[2] = new_layout #with no note
+	#layout.children[3] = new_layout #with note
 	curdoc().unhold()
 
 collapse.on_click(collapse_button)
@@ -316,7 +319,8 @@ img_callback = CustomJS(code='''window.open('https://img.jgi.doe.gov/', '_blank'
 img_button.js_on_click(img_callback)
 
 initial = row(annotation_column,p)
-layout = column(guide_link,row(collapse,img_button),initial,reference)
+layout = column(guide_link,row(collapse,img_button),initial,reference,status) #with no note
+#layout = column(note,guide_link,row(collapse,img_button),initial,reference,status) #with note
 layout.name = "app"
 curdoc().add_root(layout)
 curdoc().title = "IMG Metagenomes 4mer LDA and KNN Model"
